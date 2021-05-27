@@ -13,8 +13,6 @@ import broker.app.model.CreateAccountRequest;
 import broker.app.model.CreateAccountResponse;
 import broker.app.model.GetHoldingsRequest;
 import broker.app.model.GetHoldingsResponse;
-import broker.app.model.HoldingsRequest;
-import broker.app.model.HoldingsResponse;
 import broker.app.model.LoginRequest;
 import broker.app.model.LoginResponse;
 import broker.app.model.LogoutRequest;
@@ -84,7 +82,7 @@ public class BrokerServerService {
 			response.setErrorMessage("Username already exists");
 			return response;
 		} else {
-			brokerCredentialsRepository.createAccount(request.getUsername(), request.getPassword(), request.getFirstName(), request.getLastName(), Utils.createApiKey(10), Utils.getTime());
+			brokerCredentialsRepository.createAccount(request.getUsername(), request.getPassword(), request.getFirstName(), request.getLastName(), Utils.getTime());
 			response.setError(false);
 			return response;
 		}
