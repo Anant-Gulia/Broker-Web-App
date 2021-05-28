@@ -18,7 +18,7 @@ public class Utils {
 		return LocalDateTime.now();
 	}
 	
-	public static float getAveragePrice() {
-		return 0;
+	public static float getAveragePrice(float currentPrice, float boughtNumberOfStocks, float ownedNumberOfStocks, float previousAverage) {
+		return ((previousAverage * ownedNumberOfStocks) + ( boughtNumberOfStocks * currentPrice) ) / (ownedNumberOfStocks + boughtNumberOfStocks);
 	}
 }

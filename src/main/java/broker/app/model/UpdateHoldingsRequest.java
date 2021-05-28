@@ -10,6 +10,8 @@ public class UpdateHoldingsRequest {
 	private String stockId;
 	@JsonProperty(value = "numberOfStocks", required = true)
 	private Integer numberOfStocks;
+	@JsonProperty(value = "aipKey", required = true)
+	private String apiKey;
 
 	public String getUsername() {
 		return username;
@@ -31,15 +33,24 @@ public class UpdateHoldingsRequest {
 		return numberOfStocks;
 	}
 
-	public void setNumberOfStocks(Integer number_of_stocks) {
-		this.numberOfStocks = number_of_stocks;
+	public void setNumberOfStocks(Integer numberOfStocks) {
+		this.numberOfStocks = numberOfStocks;
 	}
 
-	public UpdateHoldingsRequest(String username, String stockId, Integer number_of_stocks) {
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public UpdateHoldingsRequest(String username, String stockId, Integer numberOfStocks, String apiKey) {
 		super();
 		this.username = username;
 		this.stockId = stockId;
-		this.numberOfStocks = number_of_stocks;
+		this.numberOfStocks = numberOfStocks;
+		this.apiKey = apiKey;
 	}
 
 	public UpdateHoldingsRequest() {

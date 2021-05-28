@@ -107,12 +107,22 @@ public class BrokerServerService {
 		BrokerHoldings brokerHoldings = brokerHoldingsRepository.getStockInventoryUsingBrokerId(userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
 		UpdateHoldingsResponse response = new UpdateHoldingsResponse();
 		if(request.getNumberOfStocks() > 0) {
-			brokerHoldingsRepository.updateHoldings(request.getNumberOfStocks(), Utils.getAveragePrice(), Utils.getTime(), userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
-			response.setError(false);
-			return response;
+			if(brokerHoldings == null) {
+				brokerHoldingsRepository.newHoldings(request.getNumberOfStocks(), Utils.getAveragePrice(50,request.getNumberOfStocks(),0,0), Utils.getTime(), userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
+				response.setError(false);
+				return response;
+			} else {
+				brokerHoldingsRepository.updateHoldings(request.getNumberOfStocks() + brokerHoldings.getNumberOfStocks(), Utils.getAveragePrice(50, request.getNumberOfStocks(), brokerHoldings.getNumberOfStocks(), brokerHoldings.getAveragePrice()), Utils.getTime(), userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
+				response.setError(false);
+				return response;
+			}
 		} else if(request.getNumberOfStocks() < 0) {
 			if(brokerHoldings.getNumberOfStocks() > Math.abs(request.getNumberOfStocks())) {
-				brokerHoldingsRepository.updateHoldings(request.getNumberOfStocks(), Utils.getAveragePrice(), Utils.getTime(), userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
+				brokerHoldingsRepository.updateHoldings(request.getNumberOfStocks() + brokerHoldings.getNumberOfStocks(), Utils.getAveragePrice(50, request.getNumberOfStocks() + brokerHoldings.getNumberOfStocks(),0,0), Utils.getTime(), userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
+				response.setError(false);
+				return response;
+			} else if(brokerHoldings.getNumberOfStocks() == Math.abs(request.getNumberOfStocks())) {
+				brokerHoldingsRepository.deleteHoldings(userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
 				response.setError(false);
 				return response;
 			} else {

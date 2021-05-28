@@ -17,10 +17,10 @@ import broker.app.entity.BrokerHoldings;
 @Transactional
 public interface BrokerHoldingsRepository extends JpaRepository<BrokerHoldings, Integer> {
 	
-	@Query(value = "SELECT HOLDINGS_ID, STOCK_ID, NUMBER_OF_STOCKS, AVERAGE_PRICE, BOUGHT_PRICE FROM BROKER_HOLDINGS WHERE BROKER_ID = :BROKER_ID", nativeQuery = true)
+	@Query(value = "SELECT HOLDINGS_ID, STOCK_ID, NUMBER_OF_STOCKS, AVERAGE_PRICE FROM BROKER_HOLDINGS WHERE BROKER_ID = :BROKER_ID", nativeQuery = true)
 	public List<BrokerHoldings> getHoldingsUsingBrokerId(@Param(value = "BROKER_ID") int brokerId);
 	
-	@Query(value = "SELECT NUMBER_OF_STOCKS FROM BROKER_HOLDINGS WHERE BROKER_ID = :BROKER_ID AND STOCK_ID = :STOCK_ID", nativeQuery = true)
+	@Query(value = "SELECT * FROM BROKER_HOLDINGS WHERE BROKER_ID = :BROKER_ID AND STOCK_ID = :STOCK_ID", nativeQuery = true)
 	public BrokerHoldings getStockInventoryUsingBrokerId(@Param(value = "BROKER_ID") int brokerId, @Param(value = "STOCK_ID") String stockId);
 	
 	@Modifying
@@ -28,6 +28,10 @@ public interface BrokerHoldingsRepository extends JpaRepository<BrokerHoldings, 
 	public void updateHoldings(@Param(value = "NUMBER_OF_STOCKS") int numberOfStocks, @Param(value = "AVERAGE_PRICE") float averagePrice, @Param(value = "UPDATED_DATE") LocalDateTime updatedDate, @Param(value = "BROKER_ID") int brokerID, @Param(value = "STOCK_ID") String stockId);
 	
 	@Modifying
-	@Query(value = "INSERT INTO BROKER_HOLDINGS(NUMBER_OF_STOCKS, AVERAGE_PRICE, UPDATED_DATE, BROKER_ID, STOCK_ID) VALUES(:NUMBER_OF_STOCKS, :AVERAGE_PRICE, :UPDATED_DATE, :BROKER_ID, :STOCK_ID)", nativeQuery = true)
-	public void newHoldings(@Param(value = "NUMBER_OF_STOCKS") int numberOfStocks, @Param(value = "AVERAGE_PRICE") float averagePrice, @Param(value = "UPDATED_DATE") LocalDateTime updatedDate, @Param(value = "BROKER_ID") int brokerID, @Param(value = "STOCK_ID") String stockId);
+	@Query(value = "DELETE FROM BROKER_HOLDINGS WHERE BROKER_ID = :BROKER_ID AND STOCK_ID = :STOCK_ID", nativeQuery = true)
+	public void deleteHoldings(@Param(value = "BROKER_ID") int brokerId, @Param(value = "STOCK_ID") String stockId);
+	
+	@Modifying
+	@Query(value = "INSERT INTO BROKER_HOLDINGS(NUMBER_OF_STOCKS, AVERAGE_PRICE, CREATED_DATE, BROKER_ID, STOCK_ID) VALUES(:NUMBER_OF_STOCKS, :AVERAGE_PRICE, :CREATED_DATE, :BROKER_ID, :STOCK_ID)", nativeQuery = true)
+	public void newHoldings(@Param(value = "NUMBER_OF_STOCKS") int numberOfStocks, @Param(value = "AVERAGE_PRICE") float averagePrice, @Param(value = "CREATED_DATE") LocalDateTime createdDate, @Param(value = "BROKER_ID") int brokerID, @Param(value = "STOCK_ID") String stockId);
 }
