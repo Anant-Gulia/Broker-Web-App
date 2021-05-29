@@ -11,6 +11,8 @@ import broker.app.model.CreateAccountRequest;
 import broker.app.model.CreateAccountResponse;
 import broker.app.model.GetHoldingsRequest;
 import broker.app.model.GetHoldingsResponse;
+import broker.app.model.GetTransactionsRequest;
+import broker.app.model.GetTransactionsResponse;
 import broker.app.model.LoginRequest;
 import broker.app.model.LoginResponse;
 import broker.app.model.LogoutRequest;
@@ -53,5 +55,11 @@ public class BrokerServerController {
 	@RequestMapping(path = "/UpdateHoldings", method = RequestMethod.POST)
 	public UpdateHoldingsResponse updateHoldings(@RequestBody UpdateHoldingsRequest request) {
 		return brokerServerService.updateUserHoldings(request);
+	}
+	
+	@CrossOrigin
+	@RequestMapping(path = "/Transactions", method = RequestMethod.POST)
+	public GetTransactionsResponse getTransactions(@RequestBody GetTransactionsRequest request) {
+		return brokerServerService.getTransactions(request);
 	}
 }
