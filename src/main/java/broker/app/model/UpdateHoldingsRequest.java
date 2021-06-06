@@ -10,7 +10,7 @@ public class UpdateHoldingsRequest {
 	private String stockId;
 	@JsonProperty(value = "numberOfStocks", required = true)
 	private Integer numberOfStocks;
-	@JsonProperty(value = "aipKey", required = true)
+	@JsonProperty(value = "apiKey", required = true)
 	private String apiKey;
 
 	public String getUsername() {

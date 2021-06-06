@@ -29,4 +29,12 @@ public interface BrokerCredentialsRepository extends JpaRepository<BrokerCredent
 	@Modifying
 	@Query(value = "INSERT INTO BROKER_CREDENTIALS(USERNAME,PASSWORD,FIRST_NAME,LAST_NAME,CREATED_DATE) VALUES(:USERNAME,:PASSWORD,:FIRST_NAME,:LAST_NAME,:CREATED_DATE)", nativeQuery = true)
 	public void createAccount(@Param(value = "USERNAME") String username, @Param(value = "PASSWORD") String password, @Param(value = "FIRST_NAME") String firstName, @Param(value = "LAST_NAME") String lastName, @Param(value = "CREATED_DATE") LocalDateTime createdDate);
+
+	@Modifying
+	@Query(value = "UPDATE BROKER_CREDENTIALS SET FIRST_NAME = :FIRST_NAME, LAST_NAME = :LAST_NAME WHERE BROKER_CREDENTIALS_ID = :BROKER_CREDENTIALS_ID", nativeQuery = true)
+	public void changeName(@Param(value = "FIRST_NAME") String firstName, @Param(value = "LAST_NAME") String lastName, @Param(value = "BROKER_CREDENTIALS_ID") int brokerCredentialsId);
+	
+	@Modifying
+	@Query(value = "UPDATE BROKER_CREDENTIALS SET PASSWORD = :PASSWORD WHERE BROKER_CREDENTIALS_ID = :BROKER_CREDENTIALS_ID", nativeQuery = true)
+	public void changePassword(@Param(value = "PASSWORD") String password, @Param(value = "BROKER_CREDENTIALS_ID") int brokerCredentialsId);
 }

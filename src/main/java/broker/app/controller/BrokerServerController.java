@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import broker.app.model.ChangeNameRequest;
+import broker.app.model.ChangeNameResponse;
+import broker.app.model.ChangePasswordRequest;
+import broker.app.model.ChangePasswordResponse;
 import broker.app.model.CreateAccountRequest;
 import broker.app.model.CreateAccountResponse;
 import broker.app.model.GetHoldingsRequest;
@@ -61,5 +65,17 @@ public class BrokerServerController {
 	@RequestMapping(path = "/Transactions", method = RequestMethod.POST)
 	public GetTransactionsResponse getTransactions(@RequestBody GetTransactionsRequest request) {
 		return brokerServerService.getTransactions(request);
+	}
+	
+	@CrossOrigin
+	@RequestMapping(path = "/ChangeName", method = RequestMethod.POST)
+	public ChangeNameResponse changeName(@RequestBody ChangeNameRequest request) {
+		return brokerServerService.changeName(request);
+	}
+	
+	@CrossOrigin
+	@RequestMapping(path = "/ChangePassword", method = RequestMethod.POST)
+	public ChangePasswordResponse changePassword(@RequestBody ChangePasswordRequest request) {
+		return brokerServerService.changePassword(request);
 	}
 }

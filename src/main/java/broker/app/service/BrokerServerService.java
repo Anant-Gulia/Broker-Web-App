@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import broker.app.entity.BrokerCredentials;
 import broker.app.entity.BrokerHoldings;
+import broker.app.model.ChangeNameRequest;
+import broker.app.model.ChangeNameResponse;
+import broker.app.model.ChangePasswordRequest;
+import broker.app.model.ChangePasswordResponse;
 import broker.app.model.CreateAccountRequest;
 import broker.app.model.CreateAccountResponse;
 import broker.app.model.GetHoldingsRequest;
@@ -112,6 +116,8 @@ public class BrokerServerService {
 		BrokerCredentials userCredentialsDb = brokerCredentialsRepository.getCredentialsUsingUsername(request.getUsername());
 		BrokerHoldings brokerHoldings = brokerHoldingsRepository.getStockInventoryUsingBrokerId(userCredentialsDb.getBrokerCredentialsId(), request.getStockId());
 		UpdateHoldingsResponse response = new UpdateHoldingsResponse();
+		System.out.println(request.getApiKey());
+		System.out.println(userCredentialsDb.getApiKey());
 		if(!request.getApiKey().equals(userCredentialsDb.getApiKey())) {
 			response.setError(true);
 			response.setErrorMessage("Incorrect API key");
@@ -166,6 +172,34 @@ public class BrokerServerService {
 		} else {
 			response.setUsername(request.getUsername());
 			response.setTransactions(brokerTransactionsRepository.getTransactionsUsingBrokerId(userCredentialsDb.getBrokerCredentialsId()));
+			response.setError(false);
+			return response;
+		}
+	}
+	
+	public ChangeNameResponse changeName(ChangeNameRequest request) {
+		BrokerCredentials userCredentialsDb = brokerCredentialsRepository.getCredentialsUsingUsername(request.getUsername());
+		ChangeNameResponse response = new ChangeNameResponse();
+		if(!request.getApiKey().equals(userCredentialsDb.getApiKey())) {
+			response.setError(true);
+			response.setErrorMessage("Incorrect API key");
+			return response;
+		} else {
+			brokerCredentialsRepository.changeName(request.getFirstName(), request.getLastName(), userCredentialsDb.getBrokerCredentialsId());
+			response.setError(false);
+			return response;
+		}
+	}
+	
+	public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
+		BrokerCredentials userCredentialsDb = brokerCredentialsRepository.getCredentialsUsingUsername(request.getUsername());
+		ChangePasswordResponse response = new ChangePasswordResponse();
+		if(!request.getApiKey().equals(userCredentialsDb.getApiKey())) {
+			response.setError(true);
+			response.setErrorMessage("Incorrect API key");
+			return response;
+		} else {
+			brokerCredentialsRepository.changePassword(request.getPassword(), userCredentialsDb.getBrokerCredentialsId());
 			response.setError(false);
 			return response;
 		}
